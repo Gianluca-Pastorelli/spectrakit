@@ -1,0 +1,23 @@
+Package: spectrakit
+Type: Package
+Title: Tools for Spectral Data Handling and Visualization
+Version: 0.1.0
+Authors@R: person(given = "Gianluca",
+                  family = "Pastorelli",
+                  role = c("aut", "cre"),
+                  email = "gianluca.pastorelli@gmail.com",
+			comment = c(ORCID = "0000-0001-6926-1952"))
+Description: Provides functions to combine, normalize and visualize spectral data, and for assembling high-quality, customizable image grids suitable for publication-quality scientific figures.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Imports:
+    dplyr,
+    readr,
+    ggplot2,
+    tibble,
+    purrr,
+    rlang,
+    magick,
+    glue,
+    data.table
+RoxygenNote: 7.3.2
