@@ -21,7 +21,7 @@ combineSpectra(
 
 \item{file_type}{Character. File extension (without dot) to search for (e.g., `"csv"`).}
 
-\item{sep}{Character. Column delimiter used in the files. Defaults to `","`; use `"\t"` for tab-delimited files.}
+\item{sep}{Character. Column delimiter used in the files. Defaults to `","`; use `"\\t"` for tab-delimited files.}
 
 \item{header}{Logical. Whether the files have a header row. Defaults to `TRUE`.}
 

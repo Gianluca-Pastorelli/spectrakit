@@ -30,7 +30,7 @@ plotSpectra(
 
 \item{file_type}{Character. File extension (without the dot). Default is `"csv"`.}
 
-\item{sep}{Character. Delimiter for file columns. Use `","` for comma-separated or `"\t"` for tab-delimited files.}
+\item{sep}{Character. Delimiter for file columns. Use `","` for comma-separated or `"\\t"` for tab-delimited files.}
 
 \item{header}{Logical. Whether files contain column headers. Default is `TRUE`.}
 
