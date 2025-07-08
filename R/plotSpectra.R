@@ -59,7 +59,7 @@
 #'   vertical_lines = c(10, 20),
 #'   shaded_ROIs = list(c(12, 14), c(18, 22)),
 #'   output_format = "png",
-#'   output_folder = tmp_dir
+#'   output_folder = "."
 #' )
 #'
 #' @importFrom readr read_delim
@@ -203,7 +203,7 @@ plotSpectra <- function(
       }
 
       ggsave(
-        filename = paste0(tools::file_path_sans_ext(file_name), "_", Sys.Date(), ".tiff"),
+        filename = paste0(tools::file_path_sans_ext(file_name), "_", Sys.Date(), ".", output_format),
         plot = p,
         device = output_format,
         path = output_folder,
@@ -259,7 +259,7 @@ plotSpectra <- function(
     }
 
     ggsave(
-      filename = paste0("Combined_Spectra_", Sys.Date(), ".tiff"),
+      filename = paste0("Combined_Spectra_", Sys.Date(), ".", output_format),
       plot = p,
       device = output_format,
       path = output_folder,

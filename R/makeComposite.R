@@ -35,7 +35,7 @@
 #' @param width_unit Character. Either "cm" or "px".
 #' @param ppi Numeric. Resolution (pixels per inch) for output file.
 #' @param output_format Character. File format for saving plots. Examples: `"tiff"`, `"png"`, `"pdf"`. Default is `"tiff"`.
-#' @param output_file Character. Path to the output folder and file name. Default is `"working directory/composite_output.tiff"`.
+#' @param output_file Character. Path to the output folder and file name. Default is `"working directory/composite_output"`.
 #'
 #' @return Saves image composite to a specified output folder.
 #'
@@ -76,7 +76,8 @@
 #'         desired_width = 10,
 #'         width_unit = "cm",
 #'         ppi = 300,
-#'         output_file = file.path(tmp_dir, "composite_example.tiff")
+#'         output_format = "png",
+#'         output_file = "Composite_Example"
 #' )
 #'
 #' @importFrom magick image_read image_info image_resize image_annotate image_join image_append image_blank image_border image_write
@@ -95,7 +96,7 @@ makeComposite <- function(
                 width_unit = "cm",
                 ppi = 300,
                 output_format = "tiff",
-                output_file = "composite_output.tiff"
+                output_file = "Composite_Output"
 ) {
 
         `%||%` <- function(a, b) if (!is.null(a)) a else b
@@ -191,6 +192,11 @@ makeComposite <- function(
                 round(desired_width * ppi / 2.54)
         } else {
                 desired_width
+        }
+
+        # Append extension if not already in output_file
+        if (!grepl(paste0("\\.", output_format, "$"), output_file)) {
+                output_file <- paste0(output_file, ".", output_format)
         }
 
         composite_resized <- image_resize(composite, paste0(desired_width_px, "x"))
