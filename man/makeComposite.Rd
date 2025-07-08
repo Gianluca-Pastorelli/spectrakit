@@ -2,10 +2,10 @@
 % Please edit documentation in R/makeComposite.R
 \name{makeComposite}
 \alias{makeComposite}
-\title{Create a composite image grid with customizable labels and resizing}
+\title{Create a labeled image grid}
 \usage{
 makeComposite(
-  image_dir,
+  folder,
   custom_order,
   rows,
   cols,
@@ -16,52 +16,55 @@ makeComposite(
   desired_width = 15,
   width_unit = "cm",
   ppi = 300,
+  output_format = "tiff",
   output_file = "composite_output.tiff"
 )
 }
 \arguments{
-\item{image_dir}{Directory containing images}
+\item{folder}{= Character. Path to the folder containing images. Default is working directory (`"."`).}
 
-\item{custom_order}{Character vector of filenames (use NA for blank slots)}
+\item{custom_order}{Character vector. Set of filenames (use NA for blank slots).}
 
-\item{rows}{Number of rows in the grid}
+\item{rows}{Integer. Number of rows in the grid.}
 
-\item{cols}{Number of columns in the grid}
+\item{cols}{Integer. Number of columns in the grid.}
 
-\item{spacing}{Spacing (in pixels) between tiles}
+\item{spacing}{Integer. Spacing (in pixels) between tiles.}
 
-\item{resize_mode}{One of "none", "fit", "fill", "width", "height", "both":
+\item{resize_mode}{Character. One of "none", "fit", "fill", "width", "height", "both";
 - "none": keep each panel at original size
 - "fit": scale each panel to fit within the smallest image dimensions (preserving aspect ratio)
 - "fill": scale and crop each panel to exactly fill the smallest dimensions
 - "width": resize to minimum width, keep original height
 - "height": resize to minimum height, keep original width
-- "both": force exact width and height (may distort aspect ratio)}
+- "both": force exact width and height (may distort aspect ratio).}
 
-\item{labels}{A list of up to 4 character vectors, each corresponding to one label layer. Each vector must be the same length as the number of non-NA images. Use empty strings "" or NULL entries to omit specific labels.}
+\item{labels}{List of up to 4 character vectors. Each vector corresponds to one label layer and must be the same length as the number of non-NA images. Use empty strings "" or NULL entries to omit specific labels.}
 
-\item{label_settings}{A list of named lists, each specifying settings for a label:
+\item{label_settings}{List of named lists. Each named list specifies settings for a label layer;
 - size: font size (e.g., 100)
 - color: font color
 - font: font family (e.g., "Arial")
 - boxcolor: background color behind text (or NA for none)
 - location: offset from gravity anchor (e.g., "+10+10")
 - gravity: placement anchor (e.g., "northwest")
-- weight: font weight (e.g., 400 = normal, 700 = bold)}
+- weight: font weight (e.g., 400 = normal, 700 = bold).}
 
-\item{desired_width}{Desired width of final image (in cm or px)}
+\item{desired_width}{Numeric. Desired width of final image (in cm or px).}
 
-\item{width_unit}{Either "cm" or "px"}
+\item{width_unit}{Character. Either "cm" or "px".}
 
-\item{ppi}{Resolution (pixels per inch) for output file}
+\item{ppi}{Numeric. Resolution (pixels per inch) for output file.}
 
-\item{output_file}{Path to output TIFF file}
+\item{output_format}{Character. File format for saving plots. Examples: `"tiff"`, `"png"`, `"pdf"`. Default is `"tiff"`.}
+
+\item{output_file}{Character. Path to the output folder and file name. Default is `"working directory/composite_output.tiff"`.}
 }
 \value{
-Saves a TIFF file to output_file
+Saves image composite to a specified output folder.
 }
 \description{
-Create a composite image grid with customizable labels and resizing
+Generate a composite image grid with customizable labels and resizing
 }
 \examples{
 library(magick)
@@ -87,7 +90,7 @@ image_write(img2, img2_path)
 
 # Create composite
 makeComposite(
-        image_dir = tmp_dir,
+        folder = tmp_dir,
         custom_order = c("img1.png", "img2.png"),
         rows = 1,
         cols = 2,

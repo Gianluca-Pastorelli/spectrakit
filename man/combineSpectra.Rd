@@ -17,13 +17,13 @@ combineSpectra(
 )
 }
 \arguments{
-\item{folder}{Character. Path to the folder containing spectral files. Defaults to current directory (`"."`).}
+\item{folder}{Character. Path to the folder containing spectral files. Default is working directory (`"."`).}
 
-\item{file_type}{Character. File extension (without dot) to search for (e.g., `"csv"`).}
+\item{file_type}{Character. File extension (without dot) to search for. Default is `"csv"`.}
 
-\item{sep}{Character. Column delimiter used in the files. Defaults to `","`; use `"\\t"` for tab-delimited files.}
+\item{sep}{Character. Delimiter for file columns. Use `","` for comma-separated (default) or `"\\t"` for tab-delimited files.}
 
-\item{header}{Logical. Whether the files have a header row. Defaults to `TRUE`.}
+\item{header}{Logical. Whether the files contain a header row. Default is `TRUE`.}
 
 \item{common_col_pos}{Integer. Column position for the common variable (e.g., wavelength). Defaults to `1`.}
 
@@ -31,12 +31,12 @@ combineSpectra(
 
 \item{range}{Numeric vector of length 2. Optional range filter for the common column (e.g., wavelength limits). Defaults to `NULL` (no filtering).}
 
-\item{normalization}{Character. Normalization method to apply to spectra. One of `"none"`, `"simple"` (divide by max), `"min-max"`, or `"z-score"`. Defaults to `"none"`.}
+\item{normalization}{Character. Normalization method to apply to spectra. One of `"none"`, `"simple"` (divide by max), `"min-max"`, or `"z-score"`. Default is `"none"`.}
 
 \item{orientation}{Character. Output orientation. Use `"columns"` (default) to keep each spectrum as a column, or `"rows"` to transpose so each spectrum is a row.}
 }
 \value{
-A `tibble`. Each spectrum is either a column (default) or row, depending on `orientation`. The common column (e.g., wavelength) is retained.
+A `tibble` that can be exported as, for example, a CSV file. Each spectrum is either a column (default) or row, depending on `orientation`. The common column (e.g., wavelength) is retained.
 }
 \description{
 Reads spectral data from multiple files in a folder, merges them by a common column (e.g., wavelength),

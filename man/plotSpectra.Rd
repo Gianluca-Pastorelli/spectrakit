@@ -22,21 +22,22 @@ plotSpectra(
   vertical_lines = NULL,
   shaded_ROIs = NULL,
   annotations = NULL,
-  output_format = "tiff"
+  output_format = "tiff",
+  output_folder = "."
 )
 }
 \arguments{
-\item{folder}{Character. Directory containing spectral data files. Default is current directory (`"."`).}
+\item{folder}{Character. Path to the folder containing spectral files. Default is working directory (`"."`).}
 
-\item{file_type}{Character. File extension (without the dot). Default is `"csv"`.}
+\item{file_type}{Character. File extension (without dot) to search for. Default is `"csv"`.}
 
-\item{sep}{Character. Delimiter for file columns. Use `","` for comma-separated or `"\\t"` for tab-delimited files.}
+\item{sep}{Character. Delimiter for file columns. Use `","` for comma-separated (default) or `"\\t"` for tab-delimited files.}
 
-\item{header}{Logical. Whether files contain column headers. Default is `TRUE`.}
+\item{header}{Logical. Whether the files contain a header row. Default is `TRUE`.}
 
-\item{normalization}{Character. Normalization method to apply to y-axis data. One of `"none"`, `"simple"` (divide by max), `"min-max"`, or `"z-score"`.}
+\item{normalization}{Character. Normalization method to apply to y-axis data. One of `"none"`, `"simple"` (divide by max), `"min-max"`, or `"z-score"`. Default is `"none"`.}
 
-\item{x_config}{Numeric vector of length 3. Specifies x-axis range and breaks: `c(min, max, step)`. Default is `NULL` (auto).}
+\item{x_config}{Numeric vector of length 3. Specifies x-axis range and breaks: `c(min, max, step)`.}
 
 \item{x_reverse}{Logical. If `TRUE`, reverses the x-axis. Default is `FALSE`.}
 
@@ -52,7 +53,7 @@ plotSpectra(
 
 \item{plot_mode}{Character. Plotting style. One of `"individual"` (one plot per spectrum), `"overlapped"` (all in one), or `"stacked"` (faceted). Default is `"individual"`.}
 
-\item{display_names}{Logical. If `TRUE`, adds file names as titles or legends. Default is `FALSE`.}
+\item{display_names}{Logical. If `TRUE`, adds file names as titles to individual spectra or a legend to combined spectra. Default is `FALSE`.}
 
 \item{vertical_lines}{Numeric vector. Adds vertical dashed lines at given x positions.}
 
@@ -61,15 +62,17 @@ plotSpectra(
 \item{annotations}{Data frame with columns `file`, `x`, `y`, and `label`. Adds annotation labels to specific points in spectra.}
 
 \item{output_format}{Character. File format for saving plots. Examples: `"tiff"`, `"png"`, `"pdf"`. Default is `"tiff"`.}
+
+\item{output_folder}{Character. Path to the output folder. Default is working directory (`"."`).}
 }
 \value{
-Saves plots to the "Outputs" folder. Returns `NULL` (used for side-effects).
+Saves plots to a specified output folder. Returns `NULL` (used for side-effects).
 }
 \description{
 Reads, normalizes, and plots spectral data from files in a folder. Supports multiple plot modes, color palettes, axis customization, annotations, and automatic saving of plots to files.
 }
 \details{
-The function automatically saves plots into an "Outputs" folder. Color settings can support color-blind-friendly palettes from `RColorBrewer`. Use `display.brewer.all(colorblindFriendly = TRUE)` to preview.
+Color settings can support color-blind-friendly palettes from `RColorBrewer`. Use `display.brewer.all(colorblindFriendly = TRUE)` to preview.
 }
 \examples{
 # Create a temporary directory and write mock spectra files
@@ -96,7 +99,8 @@ plotSpectra(
   display_names = TRUE,
   vertical_lines = c(10, 20),
   shaded_ROIs = list(c(12, 14), c(18, 22)),
-  output_format = "png"
+  output_format = "png",
+  output_folder = tmp_dir
 )
 
 }
