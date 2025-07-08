@@ -10,7 +10,7 @@
 #'
 #' @param folder Character. Directory containing spectral data files. Default is current directory (`"."`).
 #' @param file_type Character. File extension (without the dot). Default is `"csv"`.
-#' @param sep Character. Delimiter for file columns. Use `","` for comma-separated or `"\t"` for tab-delimited files.
+#' @param sep Character. Delimiter for file columns. Use `","` for comma-separated or `"\\t"` for tab-delimited files.
 #' @param header Logical. Whether files contain column headers. Default is `TRUE`.
 #' @param normalization Character. Normalization method to apply to y-axis data. One of `"none"`, `"simple"` (divide by max), `"min-max"`, or `"z-score"`.
 #' @param x_config Numeric vector of length 3. Specifies x-axis range and breaks: `c(min, max, step)`. Default is `NULL` (auto).

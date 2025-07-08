@@ -11,7 +11,7 @@
 #'
 #' @param folder Character. Path to the folder containing spectral files. Defaults to current directory (`"."`).
 #' @param file_type Character. File extension (without dot) to search for (e.g., `"csv"`).
-#' @param sep Character. Column delimiter used in the files. Defaults to `","`; use `"\t"` for tab-delimited files.
+#' @param sep Character. Column delimiter used in the files. Defaults to `","`; use `"\\t"` for tab-delimited files.
 #' @param header Logical. Whether the files have a header row. Defaults to `TRUE`.
 #' @param common_col_pos Integer. Column position for the common variable (e.g., wavelength). Defaults to `1`.
 #' @param data_col_pos Integer. Column position for the spectral intensity values. Defaults to `2`.
