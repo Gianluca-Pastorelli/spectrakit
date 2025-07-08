@@ -8,12 +8,12 @@
 #' @importFrom dplyr %>%
 #' @importFrom data.table :=
 #'
-#' @param folder Character. Directory containing spectral data files. Default is current directory (`"."`).
-#' @param file_type Character. File extension (without the dot). Default is `"csv"`.
-#' @param sep Character. Delimiter for file columns. Use `","` for comma-separated or `"\\t"` for tab-delimited files.
-#' @param header Logical. Whether files contain column headers. Default is `TRUE`.
-#' @param normalization Character. Normalization method to apply to y-axis data. One of `"none"`, `"simple"` (divide by max), `"min-max"`, or `"z-score"`.
-#' @param x_config Numeric vector of length 3. Specifies x-axis range and breaks: `c(min, max, step)`. Default is `NULL` (auto).
+#' @param folder Character. Path to the folder containing spectral files. Default is working directory (`"."`).
+#' @param file_type Character. File extension (without dot) to search for. Default is `"csv"`.
+#' @param sep Character. Delimiter for file columns. Use `","` for comma-separated (default) or `"\\t"` for tab-delimited files.
+#' @param header Logical. Whether the files contain a header row. Default is `TRUE`.
+#' @param normalization Character. Normalization method to apply to y-axis data. One of `"none"`, `"simple"` (divide by max), `"min-max"`, or `"z-score"`. Default is `"none"`.
+#' @param x_config Numeric vector of length 3. Specifies x-axis range and breaks: `c(min, max, step)`.
 #' @param x_reverse Logical. If `TRUE`, reverses the x-axis. Default is `FALSE`.
 #' @param y_trans Character. Transformation for the y-axis. One of `"linear"`, `"log10"`, or `"sqrt"`. Default is `"linear"`.
 #' @param x_label Character or expression. Label for the x-axis. Supports mathematical notation via `expression()`.
@@ -21,16 +21,17 @@
 #' @param line_size Numeric. Width of the spectral lines. Default is `0.5`.
 #' @param palette Character or vector. Color setting: a single color (e.g., `"black"`), a ColorBrewer palette name (e.g., `"Dark2"`), or a custom color vector.
 #' @param plot_mode Character. Plotting style. One of `"individual"` (one plot per spectrum), `"overlapped"` (all in one), or `"stacked"` (faceted). Default is `"individual"`.
-#' @param display_names Logical. If `TRUE`, adds file names as titles or legends. Default is `FALSE`.
+#' @param display_names Logical. If `TRUE`, adds file names as titles to individual spectra or a legend to combined spectra. Default is `FALSE`.
 #' @param vertical_lines Numeric vector. Adds vertical dashed lines at given x positions.
 #' @param shaded_ROIs List of numeric vectors. Each vector must have two elements (`xmin`, `xmax`) to define shaded x regions.
 #' @param annotations Data frame with columns `file`, `x`, `y`, and `label`. Adds annotation labels to specific points in spectra.
 #' @param output_format Character. File format for saving plots. Examples: `"tiff"`, `"png"`, `"pdf"`. Default is `"tiff"`.
+#' @param output_folder Character. Path to the output folder. Default is working directory (`"."`).
 #'
 #' @details
-#' The function automatically saves plots into an "Outputs" folder. Color settings can support color-blind-friendly palettes from `RColorBrewer`. Use `display.brewer.all(colorblindFriendly = TRUE)` to preview.
+#' Color settings can support color-blind-friendly palettes from `RColorBrewer`. Use `display.brewer.all(colorblindFriendly = TRUE)` to preview.
 #'
-#' @return Saves plots to the "Outputs" folder. Returns `NULL` (used for side-effects).
+#' @return Saves plots to a specified output folder. Returns `NULL` (used for side-effects).
 #'
 #' @examples
 #' # Create a temporary directory and write mock spectra files
@@ -57,7 +58,8 @@
 #'   display_names = TRUE,
 #'   vertical_lines = c(10, 20),
 #'   shaded_ROIs = list(c(12, 14), c(18, 22)),
-#'   output_format = "png"
+#'   output_format = "png",
+#'   output_folder = tmp_dir
 #' )
 #'
 #' @importFrom readr read_delim
@@ -90,7 +92,8 @@ plotSpectra <- function(
     vertical_lines = NULL,  # A numeric vector of x positions where vertical dashed lines will be drawn
     shaded_ROIs = NULL, # A list of numeric vectors, each with two elements c(xmin, xmax), defining shaded rectangular regions along x
     annotations = NULL, # A data frame with columns 'file', 'x', 'y', 'label'; adds text annotations at specified points in each spectrum
-    output_format = "tiff" # Choose output file format ("tiff", "png", "pdf", etc.)
+    output_format = "tiff", # Choose output file format ("tiff", "png", "pdf", etc.)
+    output_folder = "."
     ) {
   normalization <- match.arg(normalization)
   plot_mode <- match.arg(plot_mode)
@@ -143,8 +146,6 @@ plotSpectra <- function(
 
   spectra <- bind_rows(spectra_list)
 
-  if (!dir.exists("Outputs")) dir.create("Outputs")
-
   # Determine color scale
   n_files <- length(unique(spectra$file))
   color_scale <- if (length(palette) == 1 && palette != "Dark2") {
@@ -166,10 +167,20 @@ plotSpectra <- function(
         plot_theme
 
       # x-axis scale
-      if (x_reverse) {
-        p <- p + scale_x_reverse(limits = x_config[1:2], breaks = seq(x_config[1], x_config[2], x_config[3]), expand = expansion())
-      } else {
-        p <- p + scale_x_continuous(limits = x_config[1:2], breaks = seq(x_config[1], x_config[2], x_config[3]), expand = expansion())
+      if (!is.null(x_config)) {
+              if (x_reverse) {
+                      p <- p + scale_x_reverse(
+                              limits = x_config[1:2],
+                              breaks = seq(x_config[1], x_config[2], x_config[3]),
+                              expand = expansion()
+                      )
+              } else {
+                      p <- p + scale_x_continuous(
+                              limits = x_config[1:2],
+                              breaks = seq(x_config[1], x_config[2], x_config[3]),
+                              expand = expansion()
+                      )
+              }
       }
 
       # y-axis scale
@@ -195,7 +206,7 @@ plotSpectra <- function(
         filename = paste0(tools::file_path_sans_ext(file_name), "_", Sys.Date(), ".tiff"),
         plot = p,
         device = output_format,
-        path = "Outputs",
+        path = output_folder,
         scale = 1,
         width = 15,
         height = 9.3,
@@ -251,7 +262,7 @@ plotSpectra <- function(
       filename = paste0("Combined_Spectra_", Sys.Date(), ".tiff"),
       plot = p,
       device = output_format,
-      path = "Outputs",
+      path = output_folder,
       scale = 1,
       width = 15,
       height = 9.3,

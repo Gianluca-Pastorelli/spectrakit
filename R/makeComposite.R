@@ -1,4 +1,6 @@
-#' Create a composite image grid with customizable labels and resizing
+#' Create a labeled image grid
+#'
+#' Generate a composite image grid with customizable labels and resizing
 #'
 #' @importFrom stats na.omit
 #' @importFrom ggplot2 unit
@@ -8,33 +10,34 @@
 #' @importFrom magick image_read image_info image_resize image_annotate image_join image_append image_blank image_border image_write
 #' @importFrom glue glue
 #'
-#' @param image_dir Directory containing images
-#' @param custom_order Character vector of filenames (use NA for blank slots)
-#' @param rows Number of rows in the grid
-#' @param cols Number of columns in the grid
-#' @param spacing Spacing (in pixels) between tiles
-#' @param resize_mode One of "none", "fit", "fill", "width", "height", "both":
+#' @param folder = Character. Path to the folder containing images. Default is working directory (`"."`).
+#' @param custom_order Character vector. Set of filenames (use NA for blank slots).
+#' @param rows Integer. Number of rows in the grid.
+#' @param cols Integer. Number of columns in the grid.
+#' @param spacing Integer. Spacing (in pixels) between tiles.
+#' @param resize_mode Character. One of "none", "fit", "fill", "width", "height", "both";
 #'       - "none": keep each panel at original size
 #'       - "fit": scale each panel to fit within the smallest image dimensions (preserving aspect ratio)
 #'       - "fill": scale and crop each panel to exactly fill the smallest dimensions
 #'       - "width": resize to minimum width, keep original height
 #'       - "height": resize to minimum height, keep original width
-#'       - "both": force exact width and height (may distort aspect ratio)
-#' @param labels A list of up to 4 character vectors, each corresponding to one label layer. Each vector must be the same length as the number of non-NA images. Use empty strings "" or NULL entries to omit specific labels.
-#' @param label_settings A list of named lists, each specifying settings for a label:
+#'       - "both": force exact width and height (may distort aspect ratio).
+#' @param labels List of up to 4 character vectors. Each vector corresponds to one label layer and must be the same length as the number of non-NA images. Use empty strings "" or NULL entries to omit specific labels.
+#' @param label_settings List of named lists. Each named list specifies settings for a label layer;
 #'       - size: font size (e.g., 100)
 #'       - color: font color
 #'       - font: font family (e.g., "Arial")
 #'       - boxcolor: background color behind text (or NA for none)
 #'       - location: offset from gravity anchor (e.g., "+10+10")
 #'       - gravity: placement anchor (e.g., "northwest")
-#'       - weight: font weight (e.g., 400 = normal, 700 = bold)
-#' @param desired_width Desired width of final image (in cm or px)
-#' @param width_unit Either "cm" or "px"
-#' @param ppi Resolution (pixels per inch) for output file
-#' @param output_file Path to output TIFF file
+#'       - weight: font weight (e.g., 400 = normal, 700 = bold).
+#' @param desired_width Numeric. Desired width of final image (in cm or px).
+#' @param width_unit Character. Either "cm" or "px".
+#' @param ppi Numeric. Resolution (pixels per inch) for output file.
+#' @param output_format Character. File format for saving plots. Examples: `"tiff"`, `"png"`, `"pdf"`. Default is `"tiff"`.
+#' @param output_file Character. Path to the output folder and file name. Default is `"working directory/composite_output.tiff"`.
 #'
-#' @return Saves a TIFF file to output_file
+#' @return Saves image composite to a specified output folder.
 #'
 #' @examples
 #' library(magick)
@@ -60,7 +63,7 @@
 #'
 #' # Create composite
 #' makeComposite(
-#'         image_dir = tmp_dir,
+#'         folder = tmp_dir,
 #'         custom_order = c("img1.png", "img2.png"),
 #'         rows = 1,
 #'         cols = 2,
@@ -80,7 +83,7 @@
 #' @importFrom glue glue
 #' @export
 makeComposite <- function(
-                image_dir,
+                folder,
                 custom_order,
                 rows,
                 cols,
@@ -91,6 +94,7 @@ makeComposite <- function(
                 desired_width = 15,
                 width_unit = "cm",
                 ppi = 300,
+                output_format = "tiff",
                 output_file = "composite_output.tiff"
 ) {
 
@@ -104,7 +108,7 @@ makeComposite <- function(
         }
 
         valid_files <- na.omit(custom_order)
-        image_paths <- file.path(image_dir, valid_files)
+        image_paths <- file.path(folder, valid_files)
 
         missing <- image_paths[!file.exists(image_paths)]
         if (length(missing)) {
@@ -169,7 +173,7 @@ makeComposite <- function(
                 if (is.na(custom_order[i])) {
                         tiles[[i]] <- image_blank(width = min_w, height = min_h, color = "white")
                 } else {
-                        img <- image_read(file.path(image_dir, custom_order[i]))
+                        img <- image_read(file.path(folder, custom_order[i]))
                         img <- resize_image(img)
                         img <- annotate_image(img, real_idx)
                         tiles[[i]] <- image_border(img, color = "white", geometry = paste0(spacing, "x", spacing))
@@ -191,6 +195,6 @@ makeComposite <- function(
 
         composite_resized <- image_resize(composite, paste0(desired_width_px, "x"))
         dir.create(dirname(output_file), recursive = TRUE, showWarnings = FALSE)
-        image_write(composite_resized, path = output_file, format = "tiff", density = paste0(ppi, "x", ppi))
+        image_write(composite_resized, path = output_file, format = output_format, density = paste0(ppi, "x", ppi))
         cat("Composite saved to:", output_file, "\n")
 }
