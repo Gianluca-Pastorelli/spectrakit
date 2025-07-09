@@ -104,7 +104,7 @@ makeComposite(
         width_unit = "cm",
         ppi = 300,
         output_format = "png",
-        output_folder = "."
+        output_folder = tmp_dir
 )
 
 }
