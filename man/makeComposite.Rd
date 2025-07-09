@@ -17,7 +17,7 @@ makeComposite(
   width_unit = "cm",
   ppi = 300,
   output_format = "tiff",
-  output_file = "Composite_Output"
+  output_folder = "."
 )
 }
 \arguments{
@@ -29,7 +29,7 @@ makeComposite(
 
 \item{cols}{Integer. Number of columns in the grid.}
 
-\item{spacing}{Integer. Spacing (in pixels) between tiles.}
+\item{spacing}{Integer. Spacing (in pixels) between tiles. Default is `15`}
 
 \item{resize_mode}{Character. One of "none", "fit", "fill", "width", "height", "both";
 - "none": keep each panel at original size
@@ -50,15 +50,15 @@ makeComposite(
 - gravity: placement anchor (e.g., "northwest")
 - weight: font weight (e.g., 400 = normal, 700 = bold).}
 
-\item{desired_width}{Numeric. Desired width of final image (in cm or px).}
+\item{desired_width}{Numeric. Desired width of final image (in cm or px). Default is `15`}
 
-\item{width_unit}{Character. Either "cm" or "px".}
+\item{width_unit}{Character. Either "cm" or "px". Default is `"cm"`}
 
-\item{ppi}{Numeric. Resolution (pixels per inch) for output file.}
+\item{ppi}{Numeric. Resolution (pixels per inch) for output file. Default is `300`}
 
 \item{output_format}{Character. File format for saving plots. Examples: `"tiff"`, `"png"`, `"pdf"`. Default is `"tiff"`.}
 
-\item{output_file}{Character. Path to the output folder and file name. Default is `"working directory/composite_output"`.}
+\item{output_folder}{Character. Path to the output folder. Default is working directory (`"."`).}
 }
 \value{
 Saves image composite to a specified output folder.
@@ -96,7 +96,7 @@ makeComposite(
         cols = 2,
         labels = list(c("Red Circle", "Blue Rectangle")),
         label_settings = list(
-                list(size = 10, font = "Arial", color = "black", boxcolor = "white",
+                list(size = 5, font = "Arial", color = "black", boxcolor = "white",
                      gravity = "northwest", location = "+10+10", weight = 400)
         ),
         resize_mode = "none",
@@ -104,7 +104,7 @@ makeComposite(
         width_unit = "cm",
         ppi = 300,
         output_format = "png",
-        output_file = "Composite_Example"
+        output_folder = "."
 )
 
 }
