@@ -59,7 +59,7 @@
 #'   vertical_lines = c(10, 20),
 #'   shaded_ROIs = list(c(12, 14), c(18, 22)),
 #'   output_format = "png",
-#'   output_folder = "."
+#'   output_folder = tmp_dir
 #' )
 #'
 #' @importFrom readr read_delim

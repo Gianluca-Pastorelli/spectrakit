@@ -77,7 +77,7 @@
 #'         width_unit = "cm",
 #'         ppi = 300,
 #'         output_format = "png",
-#'         output_folder = "."
+#'         output_folder = tmp_dir
 #' )
 #'
 #' @importFrom magick image_read image_info image_resize image_annotate image_join image_append image_blank image_border image_write
