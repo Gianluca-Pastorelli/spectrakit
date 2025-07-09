@@ -14,7 +14,7 @@
 #' @param custom_order Character vector. Set of filenames (use NA for blank slots).
 #' @param rows Integer. Number of rows in the grid.
 #' @param cols Integer. Number of columns in the grid.
-#' @param spacing Integer. Spacing (in pixels) between tiles.
+#' @param spacing Integer. Spacing (in pixels) between tiles. Default is `15`
 #' @param resize_mode Character. One of "none", "fit", "fill", "width", "height", "both";
 #'       - "none": keep each panel at original size
 #'       - "fit": scale each panel to fit within the smallest image dimensions (preserving aspect ratio)
@@ -31,11 +31,11 @@
 #'       - location: offset from gravity anchor (e.g., "+10+10")
 #'       - gravity: placement anchor (e.g., "northwest")
 #'       - weight: font weight (e.g., 400 = normal, 700 = bold).
-#' @param desired_width Numeric. Desired width of final image (in cm or px).
-#' @param width_unit Character. Either "cm" or "px".
-#' @param ppi Numeric. Resolution (pixels per inch) for output file.
+#' @param desired_width Numeric. Desired width of final image (in cm or px). Default is `15`
+#' @param width_unit Character. Either "cm" or "px". Default is `"cm"`
+#' @param ppi Numeric. Resolution (pixels per inch) for output file. Default is `300`
 #' @param output_format Character. File format for saving plots. Examples: `"tiff"`, `"png"`, `"pdf"`. Default is `"tiff"`.
-#' @param output_file Character. Path to the output folder and file name. Default is `"working directory/composite_output"`.
+#' @param output_folder Character. Path to the output folder. Default is working directory (`"."`).
 #'
 #' @return Saves image composite to a specified output folder.
 #'
@@ -69,7 +69,7 @@
 #'         cols = 2,
 #'         labels = list(c("Red Circle", "Blue Rectangle")),
 #'         label_settings = list(
-#'                 list(size = 10, font = "Arial", color = "black", boxcolor = "white",
+#'                 list(size = 5, font = "Arial", color = "black", boxcolor = "white",
 #'                      gravity = "northwest", location = "+10+10", weight = 400)
 #'         ),
 #'         resize_mode = "none",
@@ -77,7 +77,7 @@
 #'         width_unit = "cm",
 #'         ppi = 300,
 #'         output_format = "png",
-#'         output_file = "Composite_Example"
+#'         output_folder = "."
 #' )
 #'
 #' @importFrom magick image_read image_info image_resize image_annotate image_join image_append image_blank image_border image_write
@@ -96,7 +96,7 @@ makeComposite <- function(
                 width_unit = "cm",
                 ppi = 300,
                 output_format = "tiff",
-                output_file = "Composite_Output"
+                output_folder = "."
 ) {
 
         `%||%` <- function(a, b) if (!is.null(a)) a else b
@@ -194,13 +194,8 @@ makeComposite <- function(
                 desired_width
         }
 
-        # Append extension if not already in output_file
-        if (!grepl(paste0("\\.", output_format, "$"), output_file)) {
-                output_file <- paste0(output_file, ".", output_format)
-        }
-
         composite_resized <- image_resize(composite, paste0(desired_width_px, "x"))
-        dir.create(dirname(output_file), recursive = TRUE, showWarnings = FALSE)
+        output_file <- file.path(output_folder, paste0("Composite_Image_", Sys.Date(), ".", output_format))
         image_write(composite_resized, path = output_file, format = output_format, density = paste0(ppi, "x", ppi))
         cat("Composite saved to:", output_file, "\n")
 }
