@@ -170,8 +170,8 @@ plotSpectra <- function(
       if (!is.null(x_config)) {
               if (x_reverse) {
                       p <- p + scale_x_reverse(
-                              limits = x_config[1:2],
-                              breaks = seq(x_config[1], x_config[2], x_config[3]),
+                              limits = c(x_config[2], x_config[1]),
+                              breaks = seq(x_config[2], x_config[1], -x_config[3]),
                               expand = expansion()
                       )
               } else {
