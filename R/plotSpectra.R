@@ -224,10 +224,20 @@ plotSpectra <- function(
       color_scale
 
     # x-axis scale
-    if (x_reverse) {
-      p <- p + scale_x_reverse(limits = x_config[1:2], breaks = seq(x_config[1], x_config[2], x_config[3]), expand = expansion())
-    } else {
-      p <- p + scale_x_continuous(limits = x_config[1:2], breaks = seq(x_config[1], x_config[2], x_config[3]), expand = expansion())
+    if (!is.null(x_config)) {
+            if (x_reverse) {
+                    p <- p + scale_x_reverse(
+                            limits = c(x_config[2], x_config[1]),
+                            breaks = seq(x_config[2], x_config[1], -x_config[3]),
+                            expand = expansion()
+                    )
+            } else {
+                    p <- p + scale_x_continuous(
+                            limits = x_config[1:2],
+                            breaks = seq(x_config[1], x_config[2], x_config[3]),
+                            expand = expansion()
+                    )
+            }
     }
 
     # y-axis scale
