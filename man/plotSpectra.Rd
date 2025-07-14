@@ -23,7 +23,7 @@ plotSpectra(
   shaded_ROIs = NULL,
   annotations = NULL,
   output_format = "tiff",
-  output_folder = "."
+  output_folder = NULL
 )
 }
 \arguments{
@@ -59,11 +59,11 @@ plotSpectra(
 
 \item{shaded_ROIs}{List of numeric vectors. Each vector must have two elements (`xmin`, `xmax`) to define shaded x regions.}
 
-\item{annotations}{Data frame with columns `file`, `x`, `y`, and `label`. Adds annotation labels to specific points in spectra.}
+\item{annotations}{Data frame with columns `file` (file name without extension), `x`, `y`, and `label`. Adds annotation labels to specific points in spectra.}
 
 \item{output_format}{Character. File format for saving plots. Examples: `"tiff"`, `"png"`, `"pdf"`. Default is `"tiff"`.}
 
-\item{output_folder}{Character. Path to the output folder. Default is working directory (`"."`).}
+\item{output_folder}{Character. Path to folder where plots are saved. If NULL (default), plots are not saved.}
 }
 \value{
 Saves plots to a specified output folder. Returns `NULL` (used for side-effects).

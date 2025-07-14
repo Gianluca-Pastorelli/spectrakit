@@ -17,7 +17,7 @@ makeComposite(
   width_unit = "cm",
   ppi = 300,
   output_format = "tiff",
-  output_folder = "."
+  output_folder = NULL
 )
 }
 \arguments{
@@ -58,7 +58,7 @@ makeComposite(
 
 \item{output_format}{Character. File format for saving plots. Examples: `"tiff"`, `"png"`, `"pdf"`. Default is `"tiff"`.}
 
-\item{output_folder}{Character. Path to the output folder. Default is working directory (`"."`).}
+\item{output_folder}{Character. Path to folder where image is saved. If NULL (default), image is not saved.}
 }
 \value{
 Saves image composite to a specified output folder.
