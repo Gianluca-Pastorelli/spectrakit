@@ -24,9 +24,9 @@
 #' @param display_names Logical. If `TRUE`, adds file names as titles to individual spectra or a legend to combined spectra. Default is `FALSE`.
 #' @param vertical_lines Numeric vector. Adds vertical dashed lines at given x positions.
 #' @param shaded_ROIs List of numeric vectors. Each vector must have two elements (`xmin`, `xmax`) to define shaded x regions.
-#' @param annotations Data frame with columns `file`, `x`, `y`, and `label`. Adds annotation labels to specific points in spectra.
+#' @param annotations Data frame with columns `file` (file name without extension), `x`, `y`, and `label`. Adds annotation labels to specific points in spectra.
 #' @param output_format Character. File format for saving plots. Examples: `"tiff"`, `"png"`, `"pdf"`. Default is `"tiff"`.
-#' @param output_folder Character. Path to the output folder. Default is working directory (`"."`).
+#' @param output_folder Character. Path to folder where plots are saved. If NULL (default), plots are not saved.
 #'
 #' @details
 #' Color settings can support color-blind-friendly palettes from `RColorBrewer`. Use `display.brewer.all(colorblindFriendly = TRUE)` to preview.
@@ -93,7 +93,7 @@ plotSpectra <- function(
     shaded_ROIs = NULL, # A list of numeric vectors, each with two elements c(xmin, xmax), defining shaded rectangular regions along x
     annotations = NULL, # A data frame with columns 'file', 'x', 'y', 'label'; adds text annotations at specified points in each spectrum
     output_format = "tiff", # Choose output file format ("tiff", "png", "pdf", etc.)
-    output_folder = "."
+    output_folder = NULL
     ) {
   normalization <- match.arg(normalization)
   plot_mode <- match.arg(plot_mode)
@@ -202,6 +202,7 @@ plotSpectra <- function(
         }
       }
 
+      if (!is.null(output_folder)) {
       ggsave(
         filename = paste0(tools::file_path_sans_ext(file_name), "_", Sys.Date(), ".", output_format),
         plot = p,
@@ -215,6 +216,7 @@ plotSpectra <- function(
         limitsize = TRUE,
         bg = "white"
       )
+      }
     }
   } else {
     p <- ggplot(spectra, aes(x = x, y = y, color = file)) +
@@ -268,6 +270,7 @@ plotSpectra <- function(
       p <- p + geom_text(data = annotations, aes(x = x, y = y, label = label), inherit.aes = FALSE)
     }
 
+    if (!is.null(output_folder)) {
     ggsave(
       filename = paste0("Combined_Spectra_", Sys.Date(), ".", output_format),
       plot = p,
@@ -281,5 +284,6 @@ plotSpectra <- function(
       limitsize = TRUE,
       bg = "white"
     )
+    }
   }
 }

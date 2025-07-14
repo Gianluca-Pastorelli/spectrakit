@@ -35,7 +35,7 @@
 #' @param width_unit Character. Either "cm" or "px". Default is `"cm"`
 #' @param ppi Numeric. Resolution (pixels per inch) for output file. Default is `300`
 #' @param output_format Character. File format for saving plots. Examples: `"tiff"`, `"png"`, `"pdf"`. Default is `"tiff"`.
-#' @param output_folder Character. Path to the output folder. Default is working directory (`"."`).
+#' @param output_folder Character. Path to folder where image is saved. If NULL (default), image is not saved.
 #'
 #' @return Saves image composite to a specified output folder.
 #'
@@ -96,7 +96,7 @@ makeComposite <- function(
                 width_unit = "cm",
                 ppi = 300,
                 output_format = "tiff",
-                output_folder = "."
+                output_folder = NULL
 ) {
 
         `%||%` <- function(a, b) if (!is.null(a)) a else b
@@ -195,7 +195,15 @@ makeComposite <- function(
         }
 
         composite_resized <- image_resize(composite, paste0(desired_width_px, "x"))
-        output_file <- file.path(output_folder, paste0("Composite_Image_", Sys.Date(), ".", output_format))
-        image_write(composite_resized, path = output_file, format = output_format, density = paste0(ppi, "x", ppi))
-        cat("Composite saved to:", output_file, "\n")
+
+        if (!is.null(output_folder)) {
+                output_file <- file.path(output_folder, paste0("Composite_Image_", Sys.Date(), ".", output_format))
+                image_write(
+                        composite_resized,
+                        path = output_file,
+                        format = output_format,
+                        density = paste0(ppi, "x", ppi)
+                )
+                message("Composite saved to: ", output_file)
+        }
 }
