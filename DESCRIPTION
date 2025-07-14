@@ -1,6 +1,6 @@
 Package: spectrakit
 Type: Package
-Title: Tools for Spectral Data Handling and Visualization
+Title: Spectral Data Handling and Visualization
 Version: 0.1.0
 Authors@R: person(given = "Gianluca",
                   family = "Pastorelli",
