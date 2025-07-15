@@ -1,7 +1,7 @@
 #' Combine and Normalize Spectral Data from Multiple Files
 #'
 #' Reads spectral data from multiple files in a folder, merges them by a common column (e.g., wavelength),
-#' optionally filters by a range, applies normalization, and returns the data in either row-wise or column-wise format.
+#' optionally filters by a range, applies normalization and returns the data in either row-wise or column-wise format.
 #'
 #' @importFrom stats na.omit
 #' @importFrom ggplot2 unit
@@ -69,14 +69,14 @@ combineSpectra <- function(
   if (length(files) == 0) stop("No files found with the given extension in the folder.")
 
   # Read common column from first file
-  first_file <- read_delim(files[1], delim = sep, col_names = TRUE, show_col_types = FALSE)
+  first_file <- read_delim(files[1], delim = sep, col_names = header, show_col_types = FALSE)
   if (common_col_pos > ncol(first_file)) stop("common_col_pos exceeds number of columns in the files.")
   common_col_name <- colnames(first_file)[common_col_pos]
   common_col_data <- first_file[[common_col_pos]]
 
   # Read data columns from all files, force numeric, warn on coercion
   data_list <- map(files, function(f) {
-    dat <- read_delim(f, delim = sep, col_names = TRUE, show_col_types = FALSE)
+    dat <- read_delim(f, delim = sep, col_names = header, show_col_types = FALSE)
     if (data_col_pos > ncol(dat)) stop(paste0("data_col_pos exceeds columns in file: ", f))
     col_data <- dat[[data_col_pos]]
     # Coerce to numeric if needed

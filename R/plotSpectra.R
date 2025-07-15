@@ -1,6 +1,6 @@
 #' Plot Spectral Data from Multiple Files
 #'
-#' Reads, normalizes, and plots spectral data from files in a folder. Supports multiple plot modes, color palettes, axis customization, annotations, and automatic saving of plots to files.
+#' Reads, normalizes and plots spectral data from files in a folder. Supports multiple plot modes, color palettes, axis customization, annotations and automatic saving of plots to files.
 #'
 #' @importFrom stats na.omit
 #' @importFrom ggplot2 unit
@@ -26,7 +26,7 @@
 #' @param shaded_ROIs List of numeric vectors. Each vector must have two elements (`xmin`, `xmax`) to define shaded x regions.
 #' @param annotations Data frame with columns `file` (file name without extension), `x`, `y`, and `label`. Adds annotation labels to specific points in spectra.
 #' @param output_format Character. File format for saving plots. Examples: `"tiff"`, `"png"`, `"pdf"`. Default is `"tiff"`.
-#' @param output_folder Character. Path to folder where plots are saved. If NULL (default), plots are not saved.
+#' @param output_folder Character. Path to folder where plots are saved. If NULL (default), plots are not saved; if `"."`, plots are saved in the working directory.
 #'
 #' @details
 #' Color settings can support color-blind-friendly palettes from `RColorBrewer`. Use `display.brewer.all(colorblindFriendly = TRUE)` to preview.
@@ -204,7 +204,7 @@ plotSpectra <- function(
 
       if (!is.null(output_folder)) {
       ggsave(
-        filename = paste0(tools::file_path_sans_ext(file_name), "_", Sys.Date(), ".", output_format),
+        filename = paste0(tools::file_path_sans_ext(file_name), "_", format(Sys.time(), "%Y%m%d_%H%M%S"), ".", output_format),
         plot = p,
         device = output_format,
         path = output_folder,
@@ -217,6 +217,7 @@ plotSpectra <- function(
         bg = "white"
       )
       }
+      invisible(NULL)
     }
   } else {
     p <- ggplot(spectra, aes(x = x, y = y, color = file)) +
@@ -272,7 +273,7 @@ plotSpectra <- function(
 
     if (!is.null(output_folder)) {
     ggsave(
-      filename = paste0("Combined_Spectra_", Sys.Date(), ".", output_format),
+      filename = paste0("Combined_Spectra_", format(Sys.time(), "%Y%m%d_%H%M%S"), ".", output_format),
       plot = p,
       device = output_format,
       path = output_folder,
@@ -285,5 +286,6 @@ plotSpectra <- function(
       bg = "white"
     )
     }
+    invisible(NULL)
   }
 }

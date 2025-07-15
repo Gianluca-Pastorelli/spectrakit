@@ -1,6 +1,6 @@
 #' Create a labeled image grid
 #'
-#' Generate a composite image grid with customizable labels and resizing
+#' Generates a composite image grid with customizable layout, labels and resizing options. Suitable for spectra and other image types.
 #'
 #' @importFrom stats na.omit
 #' @importFrom ggplot2 unit
@@ -10,7 +10,7 @@
 #' @importFrom magick image_read image_info image_resize image_annotate image_join image_append image_blank image_border image_write
 #' @importFrom glue glue
 #'
-#' @param folder = Character. Path to the folder containing images. Default is working directory (`"."`).
+#' @param folder Character. Path to the folder containing images. Default is working directory (`"."`).
 #' @param custom_order Character vector. Set of filenames (use NA for blank slots).
 #' @param rows Integer. Number of rows in the grid.
 #' @param cols Integer. Number of columns in the grid.
@@ -31,13 +31,14 @@
 #'       - location: offset from gravity anchor (e.g., "+10+10")
 #'       - gravity: placement anchor (e.g., "northwest")
 #'       - weight: font weight (e.g., 400 = normal, 700 = bold).
+#' @param background_color Character. Background color used for blank tiles and borders. Use `"none"` for transparency. Default is `"white"`.
 #' @param desired_width Numeric. Desired width of final image (in cm or px). Default is `15`
 #' @param width_unit Character. Either "cm" or "px". Default is `"cm"`
 #' @param ppi Numeric. Resolution (pixels per inch) for output file. Default is `300`
 #' @param output_format Character. File format for saving plots. Examples: `"tiff"`, `"png"`, `"pdf"`. Default is `"tiff"`.
-#' @param output_folder Character. Path to folder where image is saved. If NULL (default), image is not saved.
+#' @param output_folder Character. Path to folder where image is saved. If NULL (default), image is not saved; if `"."`, image is saved in the working directory.
 #'
-#' @return Saves image composite to a specified output folder.
+#' @return Saves image composite to a specified output folder. Returns `NULL` (used for side-effects).
 #'
 #' @examples
 #' library(magick)
@@ -84,7 +85,7 @@
 #' @importFrom glue glue
 #' @export
 makeComposite <- function(
-                folder,
+                folder = ".",
                 custom_order,
                 rows,
                 cols,
@@ -92,6 +93,7 @@ makeComposite <- function(
                 resize_mode = c("none", "fit", "fill", "width", "height", "both"),
                 labels = list(),
                 label_settings = list(),
+                background_color = "white",
                 desired_width = 15,
                 width_unit = "cm",
                 ppi = 300,
@@ -172,12 +174,12 @@ makeComposite <- function(
         real_idx <- 1
         for (i in seq_along(custom_order)) {
                 if (is.na(custom_order[i])) {
-                        tiles[[i]] <- image_blank(width = min_w, height = min_h, color = "white")
+                        tiles[[i]] <- image_blank(width = min_w, height = min_h, color = background_color)
                 } else {
                         img <- image_read(file.path(folder, custom_order[i]))
                         img <- resize_image(img)
                         img <- annotate_image(img, real_idx)
-                        tiles[[i]] <- image_border(img, color = "white", geometry = paste0(spacing, "x", spacing))
+                        tiles[[i]] <- image_border(img, color = background_color, geometry = paste0(spacing, "x", spacing))
                         real_idx <- real_idx + 1
                 }
         }
@@ -197,7 +199,7 @@ makeComposite <- function(
         composite_resized <- image_resize(composite, paste0(desired_width_px, "x"))
 
         if (!is.null(output_folder)) {
-                output_file <- file.path(output_folder, paste0("Composite_Image_", Sys.Date(), ".", output_format))
+                output_file <- file.path(output_folder, paste0("Composite_Image_", format(Sys.time(), "%Y%m%d_%H%M%S"), ".", output_format))
                 image_write(
                         composite_resized,
                         path = output_file,
@@ -206,4 +208,5 @@ makeComposite <- function(
                 )
                 message("Composite saved to: ", output_file)
         }
+        invisible(NULL)
 }
