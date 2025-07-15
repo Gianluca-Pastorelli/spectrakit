@@ -40,7 +40,7 @@ A `tibble` that can be exported as, for example, a CSV file. Each spectrum is ei
 }
 \description{
 Reads spectral data from multiple files in a folder, merges them by a common column (e.g., wavelength),
-optionally filters by a range, applies normalization, and returns the data in either row-wise or column-wise format.
+optionally filters by a range, applies normalization and returns the data in either row-wise or column-wise format.
 }
 \examples{
 # Create a temporary directory for mock CSV files

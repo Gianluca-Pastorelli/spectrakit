@@ -5,7 +5,7 @@
 \title{Create a labeled image grid}
 \usage{
 makeComposite(
-  folder,
+  folder = ".",
   custom_order,
   rows,
   cols,
@@ -13,6 +13,7 @@ makeComposite(
   resize_mode = c("none", "fit", "fill", "width", "height", "both"),
   labels = list(),
   label_settings = list(),
+  background_color = "white",
   desired_width = 15,
   width_unit = "cm",
   ppi = 300,
@@ -21,7 +22,7 @@ makeComposite(
 )
 }
 \arguments{
-\item{folder}{= Character. Path to the folder containing images. Default is working directory (`"."`).}
+\item{folder}{Character. Path to the folder containing images. Default is working directory (`"."`).}
 
 \item{custom_order}{Character vector. Set of filenames (use NA for blank slots).}
 
@@ -50,6 +51,8 @@ makeComposite(
 - gravity: placement anchor (e.g., "northwest")
 - weight: font weight (e.g., 400 = normal, 700 = bold).}
 
+\item{background_color}{Character. Background color used for blank tiles and borders. Use `"none"` for transparency. Default is `"white"`.}
+
 \item{desired_width}{Numeric. Desired width of final image (in cm or px). Default is `15`}
 
 \item{width_unit}{Character. Either "cm" or "px". Default is `"cm"`}
@@ -58,13 +61,13 @@ makeComposite(
 
 \item{output_format}{Character. File format for saving plots. Examples: `"tiff"`, `"png"`, `"pdf"`. Default is `"tiff"`.}
 
-\item{output_folder}{Character. Path to folder where image is saved. If NULL (default), image is not saved.}
+\item{output_folder}{Character. Path to folder where image is saved. If NULL (default), image is not saved; if `"."`, image is saved in the working directory.}
 }
 \value{
-Saves image composite to a specified output folder.
+Saves image composite to a specified output folder. Returns `NULL` (used for side-effects).
 }
 \description{
-Generate a composite image grid with customizable labels and resizing
+Generates a composite image grid with customizable layout, labels and resizing options. Suitable for spectra and other image types.
 }
 \examples{
 library(magick)

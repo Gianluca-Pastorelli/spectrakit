@@ -63,13 +63,13 @@ plotSpectra(
 
 \item{output_format}{Character. File format for saving plots. Examples: `"tiff"`, `"png"`, `"pdf"`. Default is `"tiff"`.}
 
-\item{output_folder}{Character. Path to folder where plots are saved. If NULL (default), plots are not saved.}
+\item{output_folder}{Character. Path to folder where plots are saved. If NULL (default), plots are not saved; if `"."`, plots are saved in the working directory.}
 }
 \value{
 Saves plots to a specified output folder. Returns `NULL` (used for side-effects).
 }
 \description{
-Reads, normalizes, and plots spectral data from files in a folder. Supports multiple plot modes, color palettes, axis customization, annotations, and automatic saving of plots to files.
+Reads, normalizes and plots spectral data from files in a folder. Supports multiple plot modes, color palettes, axis customization, annotations and automatic saving of plots to files.
 }
 \details{
 Color settings can support color-blind-friendly palettes from `RColorBrewer`. Use `display.brewer.all(colorblindFriendly = TRUE)` to preview.
