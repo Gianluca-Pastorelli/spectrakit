@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 Package: spectrakit
 Type: Package
 Title: Spectral Data Handling and Visualization
@@ -27,3 +28,28 @@ Imports:
 Suggests:
     RColorBrewer
 RoxygenNote: 7.3.3
+=======
+Package: spectrakit
+Type: Package
+Title: Spectral Data Handling and Visualization
+Version: 0.1.1
+Authors@R: person(given = "Gianluca",
+                  family = "Pastorelli",
+                  role = c("aut", "cre"),
+                  email = "gianluca.pastorelli@gmail.com",
+			comment = c(ORCID = "0000-0001-6926-1952"))
+Description: Provides functions to combine, normalize and visualize spectral data, and for assembling customizable image grids suitable for publication-quality scientific figures.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Imports:
+    dplyr,
+    readr,
+    ggplot2,
+    tibble,
+    purrr,
+    rlang,
+    magick,
+    glue,
+    data.table
+RoxygenNote: 7.3.2
+>>>>>>> 5d80d06ca1d145f54af4ebf598ee1d469ae6ead1
