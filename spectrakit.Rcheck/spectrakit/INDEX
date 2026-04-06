@@ -1,0 +1,6 @@
+combineSpectra          Combine and Normalize Spectral Data from
+                        Multiple Files
+makeComposite           Create a labeled image grid
+plotPCA                 Perform PCA and Create a Plot of Scores,
+                        Loadings, or Biplot
+plotSpectra             Plot Spectral Data from Multiple Files

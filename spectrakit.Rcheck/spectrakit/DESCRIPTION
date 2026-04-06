@@ -1,0 +1,22 @@
+Package: spectrakit
+Type: Package
+Title: Spectral Data Handling and Visualization
+Version: 0.1.2
+Authors@R: person(given = "Gianluca",
+                  family = "Pastorelli",
+                  role = c("aut", "cre"),
+                  email = "gianluca.pastorelli@gmail.com",
+			comment = c(ORCID = "0000-0001-6926-1952"))
+Description: Provides functions to combine, normalize and visualize spectral data, perform principal component analysis (PCA), and assemble customizable image grids suitable for publication-quality scientific figures.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Imports: dplyr, readr, ggplot2, ggrepel, tibble, purrr, rlang, magick,
+        glue, data.table, stats, grid
+Suggests: RColorBrewer
+RoxygenNote: 7.3.3
+NeedsCompilation: no
+Packaged: 2026-01-26 18:37:16 UTC; B041254
+Author: Gianluca Pastorelli [aut, cre] (ORCID:
+    <https://orcid.org/0000-0001-6926-1952>)
+Maintainer: Gianluca Pastorelli <gianluca.pastorelli@gmail.com>
+Built: R 4.5.1; ; 2026-01-26 19:13:25 UTC; windows
